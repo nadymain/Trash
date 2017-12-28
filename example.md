@@ -13,21 +13,8 @@ Plugin::load('Muffin/Trash');
 ```php
 // in the initialize() method
 $this->addBehavior('Muffin/Trash.Trash', [
-    'field' => 'deleted',
-	'events' => ['Articles.beforeFind']
+    'field' => 'deleted'
 ]);
-```
-
-```php
-// e.g index deleted is null
-public function index()
-{
-	$query = $this->Articles
-		->find()
-		->where([
-			'Articles.deleted IS' => NULL
-		]);
-}
 ```
 
 ```php
@@ -63,7 +50,10 @@ $this->Html->link(__('Trash'), ['action' => 'trash', $article->id])
 // in controller
 public function restoreTrash($id = null)
 {
-	$article = $this->Articles->get($id);
+    $article = $this
+        ->Articles->find('onlyTrashed')
+        ->where(['Articles.id' => $id])
+        ->first();
 	...
 	if ($this->Articles->restoreTrash($article)) {
 		$this->Flash->success(__('The article has been restores.'));
