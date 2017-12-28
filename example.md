@@ -50,8 +50,8 @@ $this->Html->link(__('Trash'), ['action' => 'trash', $article->id])
 // in controller
 public function restoreTrash($id = null)
 {
-    $article = $this
-        ->Articles->find('onlyTrashed')
+    $article = $this->Articles
+        ->find('onlyTrashed')
         ->where(['Articles.id' => $id])
         ->first();
 	...
